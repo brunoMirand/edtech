@@ -3,3 +3,4 @@ packege-lock.json
 .vscode
 build
 .env
+package-lock.json
