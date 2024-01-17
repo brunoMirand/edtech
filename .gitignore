@@ -4,3 +4,5 @@ packege-lock.json
 build
 .env
 package-lock.json
+coverage
+edtec
