@@ -4,5 +4,9 @@ module.exports = {
   testEnvironment: 'node',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
-  }
+  },
+  coveragePathIgnorePatterns: [
+    'src/repositories/',
+    'src/env/'
+  ]
 };
