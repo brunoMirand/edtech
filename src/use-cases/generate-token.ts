@@ -15,5 +15,5 @@ export class GenerateToken {
 
 type Input = {
   userId: string;
-  role: 'admin' | 'user'
+  role: 'admin' | 'student'
 }

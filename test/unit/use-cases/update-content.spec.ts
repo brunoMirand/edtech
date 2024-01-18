@@ -45,7 +45,7 @@ describe('Use Case - Create Content', () => {
   //     type: 'pdf',
   //   };
 
-  //   const role = 'user';
+  //   const role = 'student';
   //   //when//then
   //   await expect(() => sut.execute(inputContent, role)).rejects.toThrow(new Error('User does not have permission for this feature.'));
   // });
