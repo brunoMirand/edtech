@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
-import { makeCreateContentUseCase } from '@/use-cases/factories/make-create-content-use-case';
+import { ContentsUseCasesFactory } from '@/use-cases/factories/contents/make-use-cases';
 
 export class CreateContentController {
   constructor() { }
@@ -12,11 +12,11 @@ export class CreateContentController {
       type: z.enum(['pdf', 'video', 'image']),
     });
 
-    const { body, role } = request;
     try {
+      const { body, role } = request;
       const input = contentSchemaBody.parse(body);
-      const content = makeCreateContentUseCase();
-      const response = await content.execute(input, role);
+      const createContent = (ContentsUseCasesFactory.make()).createContent;
+      const response = await createContent.execute(input, role);
       return reply.status(201).send(response);
     } catch (e) {
       return reply.status(400).send(e.message);
