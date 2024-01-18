@@ -8,7 +8,7 @@ export class GenerateTokenController {
   async handle(request: FastifyRequest, reply: FastifyReply) {
     const tokenSchemaBody = z.object({
       userId: z.string(),
-      role: z.enum(['admin', 'user']).default('user'),
+      role: z.enum(['admin', 'student']).default('student'),
     });
 
     try {

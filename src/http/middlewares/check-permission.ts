@@ -9,7 +9,6 @@ export class CheckPermissionMiddleware {
     done: HookHandlerDoneFunction,
   ) {
     const token = request.headers['x-api-token'];
-    console.log(token);
     if (!token) {
       reply.status(401).send({ message: 'No API token found in request.' });
     }
@@ -30,7 +29,7 @@ export class CheckPermissionMiddleware {
 
 type Input = {
   userId: string;
-  role: 'admin' | 'user'
+  role: 'admin' | 'student'
 }
 
 type TokenPayload = Input & JwtPayload;

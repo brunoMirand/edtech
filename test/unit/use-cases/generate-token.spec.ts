@@ -3,7 +3,7 @@ const sut = new GenerateToken();
 
 type Input = {
   userId: string;
-  role: 'admin' | 'user'
+  role: 'admin' | 'student'
 }
 
 describe('Use Case - Generate Token', () => {
