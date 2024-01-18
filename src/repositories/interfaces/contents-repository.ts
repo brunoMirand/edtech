@@ -1,5 +1,6 @@
 export interface ContentsRepository {
-  create(data: Input): Promise<Output>
+  create(data: Input): Promise<Output>;
+  update(id: string, data: Input): Promise<Output>;
 }
 
 type Input = {

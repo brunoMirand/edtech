@@ -9,6 +9,21 @@ export class PrismaContentsRepository implements ContentsRepository {
 
     return content;
   }
+
+  async update(id: string, data: Input) {
+    const content = await prisma.content.update({
+      where: {
+        id
+      },
+      data: {
+        name: data.name,
+        description: data.description,
+        type: data.type,
+      }
+    });
+
+    return content;
+  }
 }
 
 type Input = {

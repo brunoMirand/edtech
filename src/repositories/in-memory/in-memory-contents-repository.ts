@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { ContentsRepository } from '@/repositories/interfaces/contents-repository';
 
 export class InMemoryContentsRepository implements ContentsRepository {
@@ -5,14 +6,26 @@ export class InMemoryContentsRepository implements ContentsRepository {
 
   async create(data: Input) {
     const content = {
-      id: 'content-1',
+      id: randomUUID(),
+      name: data.name,
+      description: data.description,
+      type: data.type,
+      created_at: new Date(),
+    };
+    this.contents.set(content.id, content);
+    return content;
+  }
+
+  async update(id: string, data: Input) {
+    const content = {
+      id,
       name: data.name,
       description: data.description,
       type: data.type,
       created_at: new Date(),
     };
 
-    this.contents.set(content.name, content);
+    this.contents.set(id, content);
     return content;
   }
 
