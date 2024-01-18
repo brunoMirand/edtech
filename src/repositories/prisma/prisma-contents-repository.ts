@@ -1,8 +1,9 @@
-import { prisma } from '@/infra/prisma';
+import { prisma } from '@/infra/database/prisma';
 import { ContentsRepository } from '@/repositories/interfaces/contents-repository';
+import { InputContent } from '@/domain/entities/content';
 
 export class PrismaContentsRepository implements ContentsRepository {
-  async create(data: Input) {
+  async create(data: InputContent) {
     const content = await prisma.content.create({
       data,
     });
@@ -10,7 +11,7 @@ export class PrismaContentsRepository implements ContentsRepository {
     return content;
   }
 
-  async update(id: string, data: Input) {
+  async update(id: string, data: InputContent) {
     const content = await prisma.content.update({
       where: {
         id
@@ -47,10 +48,15 @@ export class PrismaContentsRepository implements ContentsRepository {
 
     return content;
   }
-}
 
-type Input = {
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
+  async incrementViews(id: string, views: number) {
+    await prisma.content.update({
+      where: {
+        id
+      },
+      data: {
+        views
+      }
+    });
+  }
 }

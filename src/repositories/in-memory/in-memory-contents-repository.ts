@@ -1,15 +1,16 @@
 import { randomUUID } from 'node:crypto';
 import { ContentsRepository } from '@/repositories/interfaces/contents-repository';
-
+import { Content, InputContent } from '@/domain/entities/content';
 export class InMemoryContentsRepository implements ContentsRepository {
-  private contents: Map<string, Output> = new Map();
+  private contents: Map<string, Content> = new Map();
 
-  async create(data: Input) {
+  async create(data: InputContent) {
     const content = {
       id: randomUUID(),
       name: data.name,
       description: data.description,
       type: data.type,
+      views: 0,
       created_at: new Date(),
       updated_at: new Date(),
     };
@@ -17,12 +18,13 @@ export class InMemoryContentsRepository implements ContentsRepository {
     return content;
   }
 
-  async update(id: string, data: Input) {
+  async update(id: string, data: InputContent) {
     const content = {
       id,
       name: data.name,
       description: data.description,
       type: data.type,
+      views: 0,
       created_at: new Date(),
       updated_at: new Date(),
     };
@@ -43,19 +45,14 @@ export class InMemoryContentsRepository implements ContentsRepository {
   async findById(id: string) {
     return this.contents.get(id);
   }
-}
 
-type Input = {
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
-}
+  async incrementViews(id: string, views: number) {
+    const content = this.contents.get(id) as Content;
+    const payload = {
+      ...content,
+      views,
+    };
 
-type Output = {
-  id: string;
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
-  created_at: Date;
-  updated_at: Date;
+    this.contents.set(id, payload);
+  }
 }

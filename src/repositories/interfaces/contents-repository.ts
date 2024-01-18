@@ -1,22 +1,10 @@
+import { Content, InputContent } from '@/domain/entities/content';
+
 export interface ContentsRepository {
-  create(data: Input): Promise<Output>;
-  update(id: string, data: Input): Promise<Output>;
-  list(): Promise<Output[]>;
+  create(data: InputContent): Promise<Content>;
+  update(id: string, data: InputContent): Promise<Content>;
+  list(): Promise<Content[]>;
   delete(id: string): Promise<void>;
-  findById(id: string): Promise<Output | null | undefined>;
-}
-
-type Input = {
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
-}
-
-type Output = {
-  id: string;
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
-  created_at: Date;
-  updated_at: Date;
+  findById(id: string): Promise<Content | null | undefined>;
+  incrementViews(id: string, views: number): Promise<void>;
 }
