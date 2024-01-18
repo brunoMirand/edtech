@@ -24,6 +24,7 @@ model Content {
   description String
   type        Type
   created_at  DateTime @default(now())
+  updated_at  DateTime @default(now()) @updatedAt
 
   @@map("contents")
 }
