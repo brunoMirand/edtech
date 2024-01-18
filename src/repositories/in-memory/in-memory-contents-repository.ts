@@ -11,6 +11,7 @@ export class InMemoryContentsRepository implements ContentsRepository {
       description: data.description,
       type: data.type,
       created_at: new Date(),
+      updated_at: new Date(),
     };
     this.contents.set(content.id, content);
     return content;
@@ -23,12 +24,25 @@ export class InMemoryContentsRepository implements ContentsRepository {
       description: data.description,
       type: data.type,
       created_at: new Date(),
+      updated_at: new Date(),
     };
 
     this.contents.set(id, content);
     return content;
   }
 
+  async list() {
+    const contents = Array.from(this.contents.values());
+    return contents;
+  }
+
+  async delete(id: string) {
+    this.contents.delete(id);
+  }
+
+  async findById(id: string) {
+    return this.contents.get(id);
+  }
 }
 
 type Input = {
@@ -43,4 +57,5 @@ type Output = {
   description: string;
   type: 'video' | 'pdf' | 'image';
   created_at: Date;
+  updated_at: Date;
 }

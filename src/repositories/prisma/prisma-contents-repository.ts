@@ -24,6 +24,29 @@ export class PrismaContentsRepository implements ContentsRepository {
 
     return content;
   }
+
+  async list() {
+    const contents = await prisma.content.findMany();
+    return contents;
+  }
+
+  async delete(id: string) {
+    await prisma.content.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async findById(id: string) {
+    const content = await prisma.content.findUnique({
+      where: {
+        id
+      },
+    });
+
+    return content;
+  }
 }
 
 type Input = {
