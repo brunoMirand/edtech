@@ -7,6 +7,7 @@ module.exports = {
   },
   coveragePathIgnorePatterns: [
     'src/repositories/',
-    'src/env/'
+    'src/env/',
+    'src/helpers'
   ]
 };
