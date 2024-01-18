@@ -1,13 +1,9 @@
 import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-contents-repository';
 import { CreateContent } from '@/use-cases/create-content';
+import { InputContent } from '@/domain/entities/content';
 
 let contentRepository: InMemoryContentsRepository;
 let sut: CreateContent;
-type Input = {
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
-};
 
 describe('Use Case - Create Content', () => {
   beforeEach(() => {
@@ -17,7 +13,7 @@ describe('Use Case - Create Content', () => {
 
   it('should return success when create content', async () => {
     //given
-    const inputContent: Input = {
+    const inputContent: InputContent = {
       name: 'Comunicação Assíncrona',
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',
@@ -32,7 +28,7 @@ describe('Use Case - Create Content', () => {
 
   it('should return an exception when trying to create content with a non-admin user', async () => {
     //given
-    const inputContent: Input = {
+    const inputContent: InputContent = {
       name: 'Comunicação Assíncrona',
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',

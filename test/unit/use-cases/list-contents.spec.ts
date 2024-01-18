@@ -1,5 +1,6 @@
 import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-contents-repository';
 import { ListContents } from '@/use-cases/list-contents';
+import { InputContent } from '@/domain/entities/content';
 
 let contentRepository: InMemoryContentsRepository;
 let sut: ListContents;
@@ -13,7 +14,7 @@ describe('Use Case - List Contents', () => {
 
   it('should return all contents', async () => {
     //give
-    const inputContent: Input = {
+    const inputContent: InputContent = {
       name: 'Comunicação Assíncrona',
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',
@@ -36,10 +37,3 @@ describe('Use Case - List Contents', () => {
     ]));
   });
 });
-
-
-type Input = {
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
-}

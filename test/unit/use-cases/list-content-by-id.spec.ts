@@ -1,5 +1,6 @@
 import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-contents-repository';
 import { ListContentById } from '@/use-cases/list-content-by-id';
+import { Content, InputContent } from '@/domain/entities/content';
 
 let contentRepository: InMemoryContentsRepository;
 let sut: ListContentById;
@@ -12,7 +13,7 @@ describe('Use Case - List Content By Id', () => {
 
   it('should return content by id', async () => {
     //given
-    const inputContent: Input = {
+    const inputContent: InputContent = {
       name: 'Comunicação Assíncrona',
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',
@@ -20,10 +21,13 @@ describe('Use Case - List Content By Id', () => {
     const content = await contentRepository.create(inputContent);
 
     //when
-    const response = await sut.execute(content.id) as Output;
+    await sut.execute(content.id) as Content;
+
+    const response = await sut.execute(content.id) as Content;
 
     //then
     expect(response.id).toBe(content.id);
+    expect(response.views).toBe(2);
     expect(response.name).toBe('Comunicação Assíncrona');
   });
 
@@ -38,18 +42,3 @@ describe('Use Case - List Content By Id', () => {
     expect(response).toEqual(expect.arrayContaining([]));
   });
 });
-
-type Input = {
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
-}
-
-type Output = {
-  id: string;
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
-  created_at: Date;
-  updated_at: Date;
-}
