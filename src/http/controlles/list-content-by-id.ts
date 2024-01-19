@@ -5,7 +5,7 @@ import { getContentVisited, setContentVisited } from '@/helpers/cookies-content-
 export class ListContentByIdController {
   constructor() { }
 
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  async handle(request: FastifyRequest<{ Params: Parameters}>, reply: FastifyReply) {
     try {
       const { id } = request.params;
       const contentViewed = getContentVisited(request);
@@ -21,4 +21,8 @@ export class ListContentByIdController {
       reply.status(400).send(e.message);
     }
   }
+}
+
+type Parameters = {
+  id: string;
 }

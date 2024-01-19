@@ -15,7 +15,7 @@ export class GenerateTokenController {
       const input = tokenSchemaBody.parse(request.body);
       const token = (new GenerateToken).execute(input);
       reply.status(201).send({ token });
-    } catch (error) {
+    } catch (e) {
       reply.status(400).send(e.message);
     }
   }

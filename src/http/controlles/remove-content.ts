@@ -4,14 +4,18 @@ import { ContentsUseCasesFactory } from '@/use-cases/factories/contents/make-use
 export class RemoveContentController {
   constructor() { }
 
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  async handle(request: FastifyRequest<{ Params: Parameters}>, reply: FastifyReply) {
     try {
       const { id } = request.params;
       const removeContent = (ContentsUseCasesFactory.make()).removeContent;
       await removeContent.execute(id);
       reply.status(204).send();
     } catch (e) {
-      reply.status(400).send();
+      reply.status(400).send(e.message);
     }
   }
+}
+
+type Parameters = {
+  id: string;
 }

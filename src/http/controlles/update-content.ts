@@ -5,7 +5,7 @@ import { ContentsUseCasesFactory } from '@/use-cases/factories/contents/make-use
 export class UpdateContentController {
   constructor() { }
 
-  async handle(request: FastifyRequest, reply: FastifyReply) {
+  async handle(request: FastifyRequest<{ Params: Parameters}>, reply: FastifyReply) {
     const schemaBody = z.object({
       name: z.string().min(6),
       description: z.string().min(10),
@@ -22,4 +22,8 @@ export class UpdateContentController {
       reply.status(400).send(e.message);
     }
   }
+}
+
+type Parameters = {
+  id: string;
 }
