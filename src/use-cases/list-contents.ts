@@ -3,7 +3,7 @@ import { ContentsRepository } from '@/repositories/interfaces/contents-repositor
 export class ListContents {
   constructor(private contentRepository: ContentsRepository) { }
 
-  async execute(offset: number = 0, limit: number = 5) {
+  async execute(offset: number, limit: number) {
     const contents = await this.contentRepository.list(offset, limit);
     return contents;
   }
