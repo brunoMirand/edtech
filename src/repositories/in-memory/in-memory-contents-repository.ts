@@ -33,9 +33,13 @@ export class InMemoryContentsRepository implements ContentsRepository {
     return content;
   }
 
-  async list() {
+  async list(offset: number = 0, limit: number = 5) {
     const contents = Array.from(this.contents.values());
-    return contents;
+    const startIndex = offset * limit;
+    const endIndex = startIndex + limit;
+
+    const paginatedContent = contents.slice(startIndex, endIndex);
+    return paginatedContent;
   }
 
   async delete(id: string) {

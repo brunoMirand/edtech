@@ -26,8 +26,14 @@ export class PrismaContentsRepository implements ContentsRepository {
     return content;
   }
 
-  async list() {
-    const contents = await prisma.content.findMany();
+  async list(offset: number = 0, limit: number = 5) {
+    const contents = await prisma.content.findMany({
+      skip: offset,
+      take: limit,
+      orderBy: {
+        created_at: 'desc',
+      },
+    });
     return contents;
   }
 
