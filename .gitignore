@@ -6,3 +6,4 @@ build
 package-lock.json
 coverage
 edtec
+*-test.js
