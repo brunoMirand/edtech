@@ -12,6 +12,7 @@ const config: Config.InitialOptions = {
     'src/env/',
     'src/use-cases/errors',
   ],
+  coverageReporters: ['cobertura', 'text', 'html'],
 };
 
 export default config;

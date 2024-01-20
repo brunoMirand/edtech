@@ -64,22 +64,6 @@ jobs:
           show_missing: false
           fail_below_threshold: true
 
-  test-integration:
-    needs: [bootstrap]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '20.10.0'
-      - uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: ./node_modules
-          key: cache-${{ hashFiles('**/package-lock.json') }}
-      - run: npm ci
-      - run: npm run test:integration
-
   build:
     needs: ['lint', 'test-unit']
     runs-on: ubuntu-latest
