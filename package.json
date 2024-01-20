@@ -9,7 +9,7 @@
     "start:dev": "tsx watch src/server.ts",
     "test:unit": "jest ./test/unit",
     "test:integration": "jest --config jest-e2e.config.ts",
-    "test:coverage": "jest ./test/unit --coverage",
+    "test:coverage": "jest ./test/unit --silent --coverage",
     "lint": "eslint ./"
   },
   "keywords": [],
