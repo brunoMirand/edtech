@@ -1,7 +1,7 @@
 import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-contents-repository';
 import { CreateContent } from '@/use-cases/create-content';
 import { InputContent } from '@/domain/entities/content';
-import { ContentAlreadyExistsError } from '@/use-cases/errors/content-already-exists-error';
+import { ContentAlreadyExistsError } from '@/use-cases/errors/content-error';
 
 let contentRepository: InMemoryContentsRepository;
 let sut: CreateContent;

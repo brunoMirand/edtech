@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { ContentsUseCasesFactory } from '@/use-cases/factories/contents/make-use-cases';
+import { UnableRemoveContentError } from '@/use-cases/errors/contents-errors';
 
 export class RemoveContentController {
   constructor() { }
@@ -11,7 +12,11 @@ export class RemoveContentController {
       await removeContent.execute(id);
       reply.status(204).send();
     } catch (e) {
-      reply.status(400).send({ message: e.message });
+      if (e instanceof UnableRemoveContentError) {
+        reply.status(422).send({ message: e.message });
+      }
+
+      throw e;
     }
   }
 }

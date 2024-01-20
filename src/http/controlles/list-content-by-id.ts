@@ -16,7 +16,7 @@ export class ListContentByIdController {
 
       reply.status(200).send(response);
     } catch (e) {
-      reply.status(400).send({ message: e.message});
+      reply.status(422).send({ message: e.message});
     }
   }
 }

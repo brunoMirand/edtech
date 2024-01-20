@@ -1,11 +1,12 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 import { ContentsUseCasesFactory } from '@/use-cases/factories/contents/make-use-cases';
+import { UnableUpdateContentError } from '@/use-cases/errors/contents-errors';
 
 export class UpdateContentController {
   constructor() { }
 
-  async handle(request: FastifyRequest<{ Params: Parameters}>, reply: FastifyReply) {
+  async handle(request: FastifyRequest<{ Params: Parameters }>, reply: FastifyReply) {
     const schemaBody = z.object({
       name: z.string().min(6),
       description: z.string().min(10),
@@ -19,7 +20,11 @@ export class UpdateContentController {
       await updateContent.execute(id, input);
       reply.status(204).send();
     } catch (e) {
-      reply.status(400).send({ message: e.message});
+      if (e instanceof UnableUpdateContentError) {
+        reply.status(422).send({ message: e.message });
+      }
+
+      throw e;
     }
   }
 }

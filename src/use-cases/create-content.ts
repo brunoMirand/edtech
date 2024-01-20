@@ -1,12 +1,14 @@
 import { ContentsRepository } from '@/repositories/interfaces/contents-repository';
-import { ContentAlreadyExistsError } from '@/use-cases/errors/content-already-exists-error';
+import { UnableCreateContentError } from '@/use-cases/errors/contents-errors';
+import { InputContent } from '@/domain/entities/content';
+
 export class CreateContent {
   constructor(private contentRepository: ContentsRepository) {}
 
-  async execute(input: Input, role: string) {
+  async execute(input: InputContent, role: string) {
     const existingContent = await this.contentRepository.findByName(input.name);
     if (existingContent) {
-      throw new ContentAlreadyExistsError();
+      throw new UnableCreateContentError();
     }
 
     if (role !== 'admin') {
@@ -15,10 +17,4 @@ export class CreateContent {
     const content = await this.contentRepository.create(input);
     return content;
   }
-}
-
-type Input = {
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
 }
