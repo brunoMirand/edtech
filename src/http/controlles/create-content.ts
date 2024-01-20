@@ -14,10 +14,10 @@ export class CreateContentController {
     });
 
     try {
-      const { body, role } = request;
+      const { body } = request;
       const input = contentSchemaBody.parse(body);
       const createContent = (ContentsUseCasesFactory.make()).createContent;
-      const response = await createContent.execute(input, role);
+      const response = await createContent.execute(input);
       return reply.status(201).send(response);
     } catch (e) {
       if (e instanceof UnableCreateContentError) {

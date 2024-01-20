@@ -1,19 +1,22 @@
 import { ContentsRepository } from '@/repositories/interfaces/contents-repository';
 import { UnableCreateContentError } from '@/use-cases/errors/contents-errors';
 import { InputContent } from '@/domain/entities/content';
+import { Logger } from '@/infra/logger/logger';
 
 export class CreateContent {
-  constructor(private contentRepository: ContentsRepository) {}
+  constructor(
+    private contentRepository: ContentsRepository,
+    private logger: Logger,
+  ) {}
 
-  async execute(input: InputContent, role: string) {
+  async execute(input: InputContent) {
     const existingContent = await this.contentRepository.findByName(input.name);
     if (existingContent) {
+      this.logger.error('Content already to exists');
       throw new UnableCreateContentError();
     }
 
-    if (role !== 'admin') {
-      throw new Error('User does not have permission for this feature.');
-    }
+    this.logger.info('successful created content');
     const content = await this.contentRepository.create(input);
     return content;
   }

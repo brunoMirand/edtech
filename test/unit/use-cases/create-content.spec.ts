@@ -1,7 +1,7 @@
 import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-contents-repository';
 import { CreateContent } from '@/use-cases/create-content';
 import { InputContent } from '@/domain/entities/content';
-import { ContentAlreadyExistsError } from '@/use-cases/errors/content-error';
+import { UnableCreateContentError } from '@/use-cases/errors/contents-errors';
 
 let contentRepository: InMemoryContentsRepository;
 let sut: CreateContent;
@@ -19,25 +19,11 @@ describe('Use Case - Create Content', () => {
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',
     };
-    const role = 'admin';
 
     //when
-    const response = await sut.execute(inputContent, role);
+    const response = await sut.execute(inputContent);
     //then
     expect(response.name).toBe('Comunicação Assíncrona');
-  });
-
-  it('should return an exception when trying to create content with a non-admin user', async () => {
-    //given
-    const inputContent: InputContent = {
-      name: 'Comunicação Assíncrona',
-      description: 'Aprenda como se comunicar em ambientes remotos',
-      type: 'pdf',
-    };
-
-    const role = 'student';
-    //when//then
-    await expect(() => sut.execute(inputContent, role)).rejects.toThrow(new Error('User does not have permission for this feature.'));
   });
 
   it('should return an exception when trying to create content already exists', async () => {
@@ -47,12 +33,11 @@ describe('Use Case - Create Content', () => {
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',
     };
-    const role = 'admin';
 
     //when
-    await sut.execute(inputContent, role);
+    await sut.execute(inputContent);
 
     //when//then
-    await expect(() => sut.execute(inputContent, role)).rejects.toThrow(new ContentAlreadyExistsError());
+    await expect(() => sut.execute(inputContent)).rejects.toThrow(new UnableCreateContentError());
   });
 });
