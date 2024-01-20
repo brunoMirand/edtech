@@ -19,7 +19,7 @@ export class CreateContentController {
       const response = await createContent.execute(input, role);
       return reply.status(201).send(response);
     } catch (e) {
-      return reply.status(400).send(e.message);
+      return reply.status(400).send({ message: e.message });
     }
   }
 }

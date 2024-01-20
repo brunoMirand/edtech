@@ -11,7 +11,7 @@ export class RemoveContentController {
       await removeContent.execute(id);
       reply.status(204).send();
     } catch (e) {
-      reply.status(400).send(e.message);
+      reply.status(400).send({ message: e.message });
     }
   }
 }

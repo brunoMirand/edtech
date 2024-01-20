@@ -1,14 +1,17 @@
 import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-contents-repository';
+import { InMemoryViewsRepository } from '@/repositories/in-memory/in-memory-views-repository';
 import { ListContentById } from '@/use-cases/list-content-by-id';
 import { Content, InputContent } from '@/domain/entities/content';
 
 let contentRepository: InMemoryContentsRepository;
+let viewsRepository: InMemoryViewsRepository;
 let sut: ListContentById;
 
 describe('Use Case - List Content By Id', () => {
   beforeEach(() => {
     contentRepository = new InMemoryContentsRepository();
-    sut = new ListContentById(contentRepository);
+    viewsRepository = new InMemoryViewsRepository();
+    sut = new ListContentById(contentRepository, viewsRepository);
   });
 
   it('should return content by id', async () => {
@@ -20,12 +23,10 @@ describe('Use Case - List Content By Id', () => {
     };
 
     const content = await contentRepository.create(inputContent);
-    const contentViewed = [content.id];
+    const userId = content.id;
 
     //when
-    await sut.execute(content.id, ['']) as Content;
-
-    const response = await sut.execute(content.id, contentViewed) as Content;
+    const response = await sut.execute(content.id, userId) as Content;
 
     //then
     expect(response.id).toBe(content.id);
@@ -36,10 +37,10 @@ describe('Use Case - List Content By Id', () => {
   it('should return empty list when not found content by id', async () => {
     //given
     const id = 'fake-id';
-    const contentViewed = ['fake-id'];
+    const userId = 'fake-id';
 
     //when
-    const response = await sut.execute(id, contentViewed);
+    const response = await sut.execute(id, userId);
 
     //then
     expect(response).toEqual(expect.arrayContaining([]));

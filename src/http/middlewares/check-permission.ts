@@ -20,7 +20,7 @@ export class CheckPermissionMiddleware extends Permissions {
     }
 
     try {
-      const { role } = verify(String(token), env.JWT_SECRET_KEY) as TokenPayload;
+      const { role, userId } = verify(String(token), env.JWT_SECRET_KEY) as TokenPayload;
       const { routeOptions: { url }, method } = request;
 
       const isAllowed = await this.hasAccessPermission(role, url, method);
@@ -29,6 +29,7 @@ export class CheckPermissionMiddleware extends Permissions {
       }
 
       request.role = role;
+      request.userId = userId;
       done();
     } catch (e) {
       reply.status(401).send({ message: `Unauthorized ${e.message}.` });

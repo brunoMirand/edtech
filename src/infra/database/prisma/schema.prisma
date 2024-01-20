@@ -7,29 +7,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id   String @id @default(uuid())
-  name String
-  role Role   @default(STUDENT)
-
-  @@map("users")
-}
-
 model Content {
-  id          String   @id @default(uuid())
-  name        String   @unique
-  description String
-  type        Type
-  views       Int      @default(0)
-  created_at  DateTime @default(now())
-  updated_at  DateTime @default(now()) @updatedAt
+  id            String          @id @default(uuid())
+  name          String          @unique
+  description   String
+  type          Type
+  views         Int             @default(0)
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @default(now()) @updatedAt
+  ContentViewed ContentViewed[]
 
   @@map("contents")
 }
 
-enum Role {
-  STUDENT
-  ADMIN
+model ContentViewed {
+  id String @id @default(uuid())
+
+  user_id    String
+  content    Content @relation(fields: [content_id], references: [id])
+  content_id String
+
+  @@map("contents_viewed")
 }
 
 enum Type {
