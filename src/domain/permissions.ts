@@ -13,8 +13,8 @@ export class Permissions {
     this.setUserInRole();
   }
 
-  private setPermissions(aclConfig: ACLConfig[]): void {
-    this.acl.allow([...aclConfig]);
+  private setPermissions(permissionsConfig: PermissionConfig[]): void {
+    this.acl.allow([...permissionsConfig]);
   }
 
   private setUserInRole(): void {
@@ -22,7 +22,7 @@ export class Permissions {
     this.acl.addUserRoles('student', 'student');
   }
 
-  private getConfigAdmin(): ACLConfig {
+  private getConfigAdmin(): PermissionConfig {
     return {
       roles: ['admin'],
       allows: [{
@@ -32,7 +32,7 @@ export class Permissions {
     };
   }
 
-  private getConfigStudent(): ACLConfig {
+  private getConfigStudent(): PermissionConfig {
     return {
       roles: ['student'],
       allows: [{
@@ -51,7 +51,7 @@ export class Permissions {
   }
 }
 
-type ACLConfig = {
+type PermissionConfig = {
   roles: string[];
   allows: {
     resources: string;
