@@ -1,57 +1,27 @@
-
-import { Acl } from 'acl';
-
 export class Permissions {
-  protected acl;
-
-  constructor(acl: Acl) {
-    this.acl = acl;
-    this.setPermissions([
-      this.getConfigAdmin(),
-      this.getConfigStudent(),
-    ]);
-    this.setUserInRole();
-  }
-
-  private setPermissions(permissionsConfig: PermissionConfig[]): void {
-    this.acl.allow([...permissionsConfig]);
-  }
-
-  private setUserInRole(): void {
-    this.acl.addUserRoles('admin', 'admin');
-    this.acl.addUserRoles('student', 'student');
-  }
-
-  private getConfigAdmin(): PermissionConfig {
-    return {
+  private permissions: Map<string, PermissionConfig> = new Map([
+    ['admin', {
       roles: ['admin'],
       allows: [{
         resources: '/contents.*/*',
-        permissions: ['*'],
-      }],
-    };
-  }
-
-  private getConfigStudent(): PermissionConfig {
-    return {
+        permissions: ['*']
+      }]
+    }],
+    ['student', {
       roles: ['student'],
       allows: [{
         resources: '/contents.*/*',
         permissions: ['GET']
-      }],
-    };
-  }
+      }]
+    }],
+  ]);
 
-  protected hasAccessPermission(role: string, resource: string, method: string): Promise<boolean> {
-    return new Promise<boolean>((resolve) => {
-      this.acl.isAllowed(role, resource, method, (error, allowed) => {
-        resolve(!error && allowed);
-      });
-    });
+  get(role: string): PermissionConfig {
+    return this.permissions.get(role) || this.permissions.get('student') as PermissionConfig;
   }
 }
 
-type PermissionConfig = {
+export type PermissionConfig = {
   roles: string[];
   allows: {
     resources: string;

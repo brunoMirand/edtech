@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import { Acl } from 'acl';
-import { Permissions } from '@/domain/permissions';
+import { Acls } from '@/http/validations/acls';
 
-export class CheckPermissionMiddleware extends Permissions {
+export class CheckPermissionMiddleware extends Acls {
   constructor(protected acl: Acl) {
     super(acl);
   }
@@ -15,7 +15,6 @@ export class CheckPermissionMiddleware extends Permissions {
     try {
       await request.jwtVerify();
       const { routeOptions: { url }, method, user } = request;
-
       const isAllowed = await this.hasAccessPermission(user.role, url, method);
       if (!isAllowed) {
         reply.status(403).send({ message: 'User does not have permission for this feature.' });
