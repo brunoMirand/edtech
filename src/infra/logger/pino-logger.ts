@@ -16,10 +16,10 @@ export class PinoLogger implements Logger {
     });
   }
 
-  info(message: string, extras: any) {
+  info(message: string, extras: unknown) {
     this.logger.info(extras, message);
   }
-  error(message: string, extras: any) {
+  error(message: string, extras: unknown) {
     this.logger.error(extras, message);
   }
 }
