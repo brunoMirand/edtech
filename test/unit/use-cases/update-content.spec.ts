@@ -1,14 +1,26 @@
 import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-contents-repository';
 import { UpdateContent } from '@/use-cases/update-content';
 import { InputContent } from '@/domain/entities/content';
+import { PinoLogger } from '@/infra/logger/pino-logger';
 
-let contentRepository: InMemoryContentsRepository;
-let sut: UpdateContent;
+
+jest.mock('@/infra/logger/pino-logger', () => ({
+  PinoLogger: jest.fn(() => ({
+    info: jest.fn(),
+    error: jest.fn(),
+  })),
+}));
 
 describe('Use Case - Create Content', () => {
+
+  let contentRepository: InMemoryContentsRepository;
+  let sut: UpdateContent;
+  let logger: PinoLogger;
+
   beforeEach(() => {
     contentRepository = new InMemoryContentsRepository();
-    sut = new UpdateContent(contentRepository);
+    logger = new PinoLogger;
+    sut = new UpdateContent(contentRepository, logger);
   });
 
   it('should return success when create content', async () => {

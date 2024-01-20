@@ -2,14 +2,26 @@ import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-c
 import { CreateContent } from '@/use-cases/create-content';
 import { InputContent } from '@/domain/entities/content';
 import { UnableCreateContentError } from '@/use-cases/errors/contents-errors';
+import { PinoLogger } from '@/infra/logger/pino-logger';
 
-let contentRepository: InMemoryContentsRepository;
-let sut: CreateContent;
+jest.mock('@/infra/logger/pino-logger', () => ({
+  PinoLogger: jest.fn(() => ({
+    info: jest.fn(),
+    error: jest.fn(),
+  })),
+}));
 
 describe('Use Case - Create Content', () => {
+
+  let contentRepository: InMemoryContentsRepository;
+  let logger: PinoLogger;
+  let sut: CreateContent;
+
+
   beforeEach(() => {
     contentRepository = new InMemoryContentsRepository();
-    sut = new CreateContent(contentRepository);
+    logger = new PinoLogger();
+    sut = new CreateContent(contentRepository, logger);
   });
 
   it('should return success when create content', async () => {
@@ -19,7 +31,6 @@ describe('Use Case - Create Content', () => {
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',
     };
-
     //when
     const response = await sut.execute(inputContent);
     //then

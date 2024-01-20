@@ -2,16 +2,29 @@ import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-c
 import { InMemoryViewsRepository } from '@/repositories/in-memory/in-memory-views-repository';
 import { ListContentById } from '@/use-cases/list-content-by-id';
 import { Content, InputContent } from '@/domain/entities/content';
+import { PinoLogger } from '@/infra/logger/pino-logger';
 
-let contentRepository: InMemoryContentsRepository;
-let viewsRepository: InMemoryViewsRepository;
-let sut: ListContentById;
+
+jest.mock('@/infra/logger/pino-logger', () => ({
+  PinoLogger: jest.fn(() => ({
+    info: jest.fn(),
+    error: jest.fn(),
+  })),
+}));
+
 
 describe('Use Case - List Content By Id', () => {
+
+  let contentRepository: InMemoryContentsRepository;
+  let viewsRepository: InMemoryViewsRepository;
+  let logger: PinoLogger;
+  let sut: ListContentById;
+
   beforeEach(() => {
     contentRepository = new InMemoryContentsRepository();
     viewsRepository = new InMemoryViewsRepository();
-    sut = new ListContentById(contentRepository, viewsRepository);
+    logger = new PinoLogger();
+    sut = new ListContentById(contentRepository, viewsRepository, logger);
   });
 
   it('should return content by id', async () => {
