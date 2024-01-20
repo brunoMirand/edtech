@@ -15,10 +15,10 @@ export class ContentsUseCasesFactory {
 
     return {
       createContent: new CreateContent(contentRepository, logger),
-      updateContent: new UpdateContent(contentRepository),
-      listContents: new ListContents(contentRepository),
-      removeContent: new RemoveContent(contentRepository),
-      listContentById: new ListContentById(contentRepository, viewsRepository),
+      updateContent: new UpdateContent(contentRepository, logger),
+      listContents: new ListContents(contentRepository, logger),
+      removeContent: new RemoveContent(contentRepository, logger),
+      listContentById: new ListContentById(contentRepository, viewsRepository, logger),
     };
   }
 }

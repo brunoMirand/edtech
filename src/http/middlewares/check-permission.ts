@@ -1,9 +1,10 @@
 import { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import { Acl } from 'acl';
 import { Acls } from '@/http/validations/acls';
+import { Logger } from '@/infra/logger/logger';
 
 export class CheckPermissionMiddleware extends Acls {
-  constructor(protected acl: Acl) {
+  constructor(protected acl: Acl, private logger: Logger) {
     super(acl);
   }
 
@@ -17,11 +18,13 @@ export class CheckPermissionMiddleware extends Acls {
       const { routeOptions: { url }, method, user } = request;
       const isAllowed = await this.hasAccessPermission(user.role, url, method);
       if (!isAllowed) {
+        this.logger.error('User does not have permission for this feature.', { extras: user });
         reply.status(403).send({ message: 'User does not have permission for this feature.' });
       }
 
       done();
     } catch (e) {
+      this.logger.error(`Unauthorized ${e.message}`);
       reply.status(401).send({ message: `Unauthorized ${e.message}.` });
     }
   }

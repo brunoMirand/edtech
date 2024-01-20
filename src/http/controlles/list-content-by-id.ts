@@ -6,10 +6,10 @@ export class ListContentByIdController {
 
   async handle(request: FastifyRequest<{ Params: Parameters}>, reply: FastifyReply) {
     try {
-      const { params: { id }, userId } = request;
+      const { params: { id }, user: { sub } } = request;
 
       const listContentById = (ContentsUseCasesFactory.make()).listContentById;
-      const response = await listContentById.execute(id, userId);
+      const response = await listContentById.execute(id, sub);
       if (!response) {
         reply.status(204).send(response);
       }

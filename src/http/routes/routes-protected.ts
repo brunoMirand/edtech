@@ -6,10 +6,13 @@ import { UpdateContentController } from '@/http/controlles/update-content';
 import { RemoveContentController } from '@/http/controlles/remove-content';
 import { ListContentsController } from '@/http/controlles/list-contents';
 import { ListContentByIdController } from '@/http/controlles/list-content-by-id';
+import { PinoLogger } from '@/infra/logger/pino-logger';
 
 export async function appRouteProtected(app: FastifyInstance) {
   const aclInstance = new acl(new acl.memoryBackend());
-  const checkPermissionMiddleware = new CheckPermissionMiddleware(aclInstance);
+  const logger = new PinoLogger();
+
+  const checkPermissionMiddleware = new CheckPermissionMiddleware(aclInstance, logger);
   app.addHook('preHandler', (request, reply, done) => {
     checkPermissionMiddleware.handle(request, reply, done);
   });
