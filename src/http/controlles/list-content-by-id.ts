@@ -16,7 +16,11 @@ export class ListContentByIdController {
 
       reply.status(200).send(response);
     } catch (e) {
-      reply.status(422).send({ message: e.message});
+      if (e instanceof Error) {
+        reply.status(400).send({ message: e.message });
+      }
+
+      throw e;
     }
   }
 }

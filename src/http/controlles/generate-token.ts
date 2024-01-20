@@ -17,7 +17,11 @@ export class GenerateTokenController {
       }, { sign: { sub: input.userId } });
       reply.status(201).send({ token });
     } catch (e) {
-      reply.status(400).send({ message: e.message });
+      if (e instanceof Error) {
+        reply.status(400).send({ message: e.message });
+      }
+
+      throw e;
     }
   }
 }

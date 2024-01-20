@@ -24,8 +24,12 @@ export class CheckPermissionMiddleware extends Acls {
 
       done();
     } catch (e) {
-      this.logger.error(`Unauthorized ${e.message}`);
-      reply.status(401).send({ message: `Unauthorized ${e.message}.` });
+      if (e instanceof Error) {
+        this.logger.error(`Unauthorized ${e.message}`);
+        reply.status(401).send({ message: `Unauthorized ${e.message}.` });
+      }
+
+      throw e;
     }
   }
 
