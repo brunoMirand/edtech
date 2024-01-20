@@ -1,0 +1,97 @@
+name: ci
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  workflow_call:
+
+jobs:
+  bootstrap:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0'
+      - uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ./node_modules
+          key: cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+
+  lint:
+    needs: [bootstrap]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0'
+      - uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ./node_modules
+          key: cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+      - run: npm run lint
+
+  test-unit:
+    needs: [bootstrap]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0'
+      - uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ./node_modules
+          key: cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+      - run: npm run test:coverage
+      - uses: 5monkeys/cobertura-action@master
+        with:
+          path: coverage/cobertura-coverage.xml
+          report_name: test:coverage
+          minimum_coverage: 75
+          skip_covered: true
+          show_line: false
+          show_missing: false
+          fail_below_threshold: true
+
+  test-integration:
+    needs: [bootstrap]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0'
+      - uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ./node_modules
+          key: cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+      - run: npm run test:integration
+
+  build:
+    needs: ['lint', 'test-unit']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0'
+      - uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ./node_modules
+          key: cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+      - run: npm run build --if-present
