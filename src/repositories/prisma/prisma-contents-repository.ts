@@ -28,12 +28,17 @@ export class PrismaContentsRepository implements ContentsRepository {
 
   async list(offset: number = 0, limit: number = 5) {
     const contents = await prisma.content.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
       skip: offset,
       take: limit,
       orderBy: {
         created_at: 'desc',
       },
     });
+
     return contents;
   }
 
@@ -64,5 +69,15 @@ export class PrismaContentsRepository implements ContentsRepository {
         views
       }
     });
+  }
+
+  async findByName(name: string) {
+    const content = prisma.content.findUnique({
+      where: {
+        name,
+      },
+    });
+
+    return content;
   }
 }

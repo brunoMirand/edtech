@@ -59,4 +59,11 @@ export class InMemoryContentsRepository implements ContentsRepository {
 
     this.contents.set(id, payload);
   }
+
+  async findByName(name: string) {
+    const contents = Array.from(this.contents.values());
+
+    const findContent = contents.find(content => content.name === name);
+    return findContent;
+  }
 }
