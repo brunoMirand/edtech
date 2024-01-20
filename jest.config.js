@@ -8,7 +8,6 @@ module.exports = {
   coveragePathIgnorePatterns: [
     'src/repositories/',
     'src/env/',
-    'src/helpers',
     'src/use-cases/errors'
   ]
 };
