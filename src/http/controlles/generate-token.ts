@@ -1,6 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
-import { GenerateToken } from '@/use-cases/generate-token';
 
 export class GenerateTokenController {
   constructor() { }
@@ -13,10 +12,12 @@ export class GenerateTokenController {
 
     try {
       const input = tokenSchemaBody.parse(request.body);
-      const token = (new GenerateToken).execute(input);
+      const token = await reply.jwtSign({
+        role: input.role
+      }, { sign: { sub: input.userId } });
       reply.status(201).send({ token });
     } catch (e) {
-      reply.status(400).send({ message: e.message});
+      reply.status(400).send({ message: e.message });
     }
   }
 }
