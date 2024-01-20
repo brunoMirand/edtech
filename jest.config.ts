@@ -1,6 +1,8 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} */
-module.exports = {
+import type { Config } from '@jest/types';
+
+const config: Config.InitialOptions = {
   preset: 'ts-jest',
+  setupFiles: ['./jest.setup.ts'],
   testEnvironment: 'node',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -8,6 +10,8 @@ module.exports = {
   coveragePathIgnorePatterns: [
     'src/repositories/',
     'src/env/',
-    'src/use-cases/errors'
-  ]
+    'src/use-cases/errors',
+  ],
 };
+
+export default config;
