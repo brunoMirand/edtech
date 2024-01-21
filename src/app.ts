@@ -4,7 +4,6 @@ import { ZodError } from 'zod';
 import { env } from '@/env';
 import { appRoutePublic, appRouteProtected } from '@/http/routes';
 
-
 export const app = fastify();
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET_KEY
