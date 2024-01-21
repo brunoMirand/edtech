@@ -30,12 +30,11 @@ describe('Use Case - List Contents', () => {
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',
     };
-    const offset = 0;
-    const limit = 5;
+    const page = 1;
     await contentRepository.create(inputContent);
 
     //when
-    const response = await sut.execute(offset, limit);
+    const response = await sut.execute(page);
 
     //then
     expect(response).toEqual(expect.arrayContaining([

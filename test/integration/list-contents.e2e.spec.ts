@@ -78,16 +78,24 @@ describe('GET /contents', () => {
 
 
     const response = await request(app.server)
-      .get('/contents?offset=1&limit=1')
+      .get('/contents?page=1')
       .set('authorization', `Bearer ${tokens.student}`);
 
     expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual([
+    expect(response.body).toEqual(expect.arrayContaining([
+      {
+        id: expect.any(String),
+        name: 'Seja sempre você',
+      },
       {
         id: expect.any(String),
         name: 'Faça o que é melhor pra ambos',
       },
-    ]);
-    expect(response.body).toHaveLength(1);
+      {
+        id: expect.any(String),
+        name: 'Pense bem antes, mas não muito',
+      }
+    ]));
+    expect(response.body).toHaveLength(5);
   });
 });

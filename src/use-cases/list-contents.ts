@@ -7,9 +7,9 @@ export class ListContents {
     private logger: Logger
   ) { }
 
-  async execute(offset: number, limit: number) {
-    const contents = await this.contentRepository.list(offset, limit);
-    this.logger.info('recovered contents',  { extras: { offset, limit } });
+  async execute(page: number) {
+    const contents = await this.contentRepository.list(page);
+    this.logger.info('recovered contents',  { extras: { page } });
     return contents;
   }
 }

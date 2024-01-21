@@ -4,11 +4,11 @@ import { ContentsUseCasesFactory } from '@/use-cases/factories/contents/make-use
 export class ListContentsController {
   constructor() { }
 
-  async handle(request: FastifyRequest<{ Querystring: QueryParameters}>, reply: FastifyReply) {
+  async handle(request: FastifyRequest<{ Querystring: QueryParameters }>, reply: FastifyReply) {
     try {
-      const { offset = 0, limit = 5 } = request.query;
+      const { page = 1 } = request.query;
       const listContents = (ContentsUseCasesFactory.make().listContents);
-      const contents = await listContents.execute(Number(offset), Number(limit));
+      const contents = await listContents.execute(page);
       reply.status(200).send(contents);
     } catch (e) {
       if (e instanceof Error) {
@@ -21,6 +21,5 @@ export class ListContentsController {
 }
 
 type QueryParameters = {
-  offset?: number;
-  limit?: number;
+  page?: number;
 }
