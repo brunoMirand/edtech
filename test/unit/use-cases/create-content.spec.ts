@@ -1,45 +1,54 @@
 import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-contents-repository';
 import { CreateContent } from '@/use-cases/create-content';
+import { InputContent } from '@/domain/entities/content';
+import { UnableCreateContentError } from '@/use-cases/errors/contents-errors';
+import { PinoLogger } from '@/infra/logger/pino-logger';
 
-let contentRepository: InMemoryContentsRepository;
-let sut: CreateContent;
-type Input = {
-  name: string;
-  description: string;
-  type: 'video' | 'pdf' | 'image';
-};
+jest.mock('@/infra/logger/pino-logger', () => ({
+  PinoLogger: jest.fn(() => ({
+    info: jest.fn(),
+    error: jest.fn(),
+  })),
+}));
 
 describe('Use Case - Create Content', () => {
+
+  let contentRepository: InMemoryContentsRepository;
+  let logger: PinoLogger;
+  let sut: CreateContent;
+
+
   beforeEach(() => {
     contentRepository = new InMemoryContentsRepository();
-    sut = new CreateContent(contentRepository);
+    logger = new PinoLogger();
+    sut = new CreateContent(contentRepository, logger);
   });
 
   it('should return success when create content', async () => {
     //given
-    const inputContent: Input = {
+    const inputContent: InputContent = {
       name: 'Comunicação Assíncrona',
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',
     };
-    const role = 'admin';
-
     //when
-    const response = await sut.execute(inputContent, role);
+    const response = await sut.execute(inputContent);
     //then
     expect(response.name).toBe('Comunicação Assíncrona');
   });
 
-  it('should return an exception when trying to create content with a non-admin user', async () => {
+  it('should return an exception when trying to create content already exists', async () => {
     //given
-    const inputContent: Input = {
+    const inputContent: InputContent = {
       name: 'Comunicação Assíncrona',
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',
     };
 
-    const role = 'user';
+    //when
+    await sut.execute(inputContent);
+
     //when//then
-    await expect(() => sut.execute(inputContent, role)).rejects.toThrow(new Error('User does not have permission for this feature.'));
+    await expect(() => sut.execute(inputContent)).rejects.toThrow(new UnableCreateContentError());
   });
 });

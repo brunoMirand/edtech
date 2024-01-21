@@ -1,5 +1,5 @@
 import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-contents-repository';
-import { UpdateContent } from '@/use-cases/update-content';
+import { RemoveContent } from '@/use-cases/remove-content';
 import { InputContent } from '@/domain/entities/content';
 import { PinoLogger } from '@/infra/logger/pino-logger';
 
@@ -11,37 +11,29 @@ jest.mock('@/infra/logger/pino-logger', () => ({
   })),
 }));
 
-describe('Use Case - Create Content', () => {
-
+describe('Use Case - Remove Content', () => {
   let contentRepository: InMemoryContentsRepository;
-  let sut: UpdateContent;
   let logger: PinoLogger;
+  let sut: RemoveContent;
 
   beforeEach(() => {
     contentRepository = new InMemoryContentsRepository();
-    logger = new PinoLogger;
-    sut = new UpdateContent(contentRepository, logger);
+    logger = new PinoLogger();
+    sut = new RemoveContent(contentRepository, logger);
   });
 
-  it('should return success when create content', async () => {
+  it('should remove content with success', async () => {
     //given
-    const content: InputContent = {
+    const inputContent: InputContent = {
       name: 'Comunicação Assíncrona',
       description: 'Aprenda como se comunicar em ambientes remotos',
       type: 'pdf',
     };
 
-    const contentCreated = await contentRepository.create(content);
+    const content = await contentRepository.create(inputContent);
+    expect(content).toBeDefined();
 
-    const newContent: InputContent = {
-      name: 'Ser ou não ser',
-      description: 'aprenda com os melhores',
-      type: 'video',
-    };
-
-    //when
-    const response = await sut.execute(contentCreated.id, newContent);
-    //then
-    expect(response.name).toBe('Ser ou não ser');
+    //when//then
+    expect(await sut.execute(content.id)).toBe(void 0);
   });
 });

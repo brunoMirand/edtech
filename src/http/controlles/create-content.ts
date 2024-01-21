@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { z } from 'zod';
 import { ContentsUseCasesFactory } from '@/use-cases/factories/contents/make-use-cases';
+import { UnableCreateContentError } from '@/use-cases/errors/contents-errors';
 
 export class CreateContentController {
   constructor() { }
@@ -13,13 +14,16 @@ export class CreateContentController {
     });
 
     try {
-      const { body, role } = request;
+      const { body } = request;
       const input = contentSchemaBody.parse(body);
       const createContent = (ContentsUseCasesFactory.make()).createContent;
-      const response = await createContent.execute(input, role);
+      const response = await createContent.execute(input);
       return reply.status(201).send(response);
     } catch (e) {
-      return reply.status(400).send(e.message);
+      if (e instanceof UnableCreateContentError) {
+        return reply.status(422).send({ message: e.message });
+      }
+      throw e;
     }
   }
 }
