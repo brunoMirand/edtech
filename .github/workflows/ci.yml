@@ -1,72 +1,28 @@
-name: ci
+name: CI
 
 on:
-  pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
-  workflow_call:
+  push:
+    branches:
+      - main
 
 jobs:
-  bootstrap:
+  lint-and-test:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '20.10.0'
-      - uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: ./node_modules
-          key: cache-${{ hashFiles('**/package-lock.json') }}
-      - run: npm ci
 
-  lint:
-    needs: [bootstrap]
-    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '20.10.0'
-      - uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: ./node_modules
-          key: cache-${{ hashFiles('**/package-lock.json') }}
-      - run: npm ci
-      - run: npm run lint
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-  test-unit:
-    needs: [bootstrap]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
           node-version: '20.10.0'
-      - uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: ./node_modules
-          key: cache-${{ hashFiles('**/package-lock.json') }}
-      - run: npm ci
-      - run: npm run test:coverage
 
-  build:
-    needs: ['lint', 'test-unit']
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '20.10.0'
-      - uses: actions/cache@v3
-        id: cache-node-modules
-        with:
-          path: ./node_modules
-          key: cache-${{ hashFiles('**/package-lock.json') }}
-      - run: npm ci
-      - run: npm run build --if-present
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm test:unit

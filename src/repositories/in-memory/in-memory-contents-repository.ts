@@ -33,12 +33,19 @@ export class InMemoryContentsRepository implements ContentsRepository {
     return content;
   }
 
-  async list(offset: number = 0, limit: number = 5) {
+  async list(page: number = 0) {
+    const itemsPerPage = 5;
     const contents = Array.from(this.contents.values());
-    const startIndex = offset * limit;
-    const endIndex = startIndex + limit;
+    const startIndex = (page - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
 
-    const paginatedContent = contents.slice(startIndex, endIndex);
+    const paginatedContent = contents.slice(startIndex, endIndex)
+      .map(content => {
+        return {
+          id: content.id,
+          name: content.name
+        };
+      });
     return paginatedContent;
   }
 

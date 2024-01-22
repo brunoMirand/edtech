@@ -2,24 +2,22 @@ import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-c
 import { RemoveContent } from '@/use-cases/remove-content';
 import { InputContent } from '@/domain/entities/content';
 import { PinoLogger } from '@/infra/logger/pino-logger';
+import { RedisCache } from '@/infra/cache/redis';
 
-
-jest.mock('@/infra/logger/pino-logger', () => ({
-  PinoLogger: jest.fn(() => ({
-    info: jest.fn(),
-    error: jest.fn(),
-  })),
-}));
+jest.mock('@/infra/logger/pino-logger');
+jest.mock('@/infra/cache/redis');
 
 describe('Use Case - Remove Content', () => {
   let contentRepository: InMemoryContentsRepository;
-  let logger: PinoLogger;
+  let logger: jest.Mocked<PinoLogger>;
+  let cache: jest.Mocked<RedisCache>;
   let sut: RemoveContent;
 
   beforeEach(() => {
     contentRepository = new InMemoryContentsRepository();
-    logger = new PinoLogger();
-    sut = new RemoveContent(contentRepository, logger);
+    logger = new PinoLogger() as jest.Mocked<PinoLogger>;
+    cache = new RedisCache() as jest.Mocked<RedisCache>;
+    sut = new RemoveContent(contentRepository, logger, cache);
   });
 
   it('should remove content with success', async () => {

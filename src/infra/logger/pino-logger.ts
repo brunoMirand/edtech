@@ -1,5 +1,5 @@
 import pino, { Logger as LoggerConfig } from 'pino';
-import { Logger } from '@/infra/logger/logger';
+import { Logger } from '@/infra/logger/interface';
 
 export class PinoLogger implements Logger {
   private logger: LoggerConfig;

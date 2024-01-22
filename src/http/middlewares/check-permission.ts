@@ -1,7 +1,7 @@
 import { FastifyRequest, FastifyReply, HookHandlerDoneFunction } from 'fastify';
 import { Acl } from 'acl';
 import { Acls } from '@/http/validations/acls';
-import { Logger } from '@/infra/logger/logger';
+import { Logger } from '@/infra/logger/interface';
 
 export class CheckPermissionMiddleware extends Acls {
   constructor(protected acl: Acl, private logger: Logger) {

@@ -2,25 +2,22 @@ import { InMemoryContentsRepository } from '@/repositories/in-memory/in-memory-c
 import { UpdateContent } from '@/use-cases/update-content';
 import { InputContent } from '@/domain/entities/content';
 import { PinoLogger } from '@/infra/logger/pino-logger';
+import { RedisCache } from '@/infra/cache/redis';
 
-
-jest.mock('@/infra/logger/pino-logger', () => ({
-  PinoLogger: jest.fn(() => ({
-    info: jest.fn(),
-    error: jest.fn(),
-  })),
-}));
+jest.mock('@/infra/logger/pino-logger');
+jest.mock('@/infra/cache/redis');
 
 describe('Use Case - Create Content', () => {
-
   let contentRepository: InMemoryContentsRepository;
+  let logger: jest.Mocked<PinoLogger>;
+  let cache: jest.Mocked<RedisCache>;
   let sut: UpdateContent;
-  let logger: PinoLogger;
 
   beforeEach(() => {
     contentRepository = new InMemoryContentsRepository();
-    logger = new PinoLogger;
-    sut = new UpdateContent(contentRepository, logger);
+    logger = new PinoLogger() as jest.Mocked<PinoLogger>;
+    cache = new RedisCache() as jest.Mocked<RedisCache>;
+    sut = new UpdateContent(contentRepository, logger, cache);
   });
 
   it('should return success when create content', async () => {

@@ -26,23 +26,29 @@ export class PrismaContentsRepository implements ContentsRepository {
     return content;
   }
 
-  async list(offset: number = 0, limit: number = 5) {
+  async list(page: number = 0) {
+    const itemsPerPage = 5;
+    const skip = (page - 1) * itemsPerPage;
     const contents = await prisma.content.findMany({
       select: {
         id: true,
         name: true,
       },
-      skip: offset,
-      take: limit,
-      orderBy: {
-        created_at: 'desc',
+      skip: skip,
+      take: itemsPerPage,
+      orderBy: [{
+        updated_at: 'desc',
       },
+      {
+        created_at: 'desc',
+      }
+      ],
     });
 
     return contents;
   }
 
-  async delete(id: string) {
+  async delete (id: string) {
     await prisma.content.delete({
       where: {
         id,
