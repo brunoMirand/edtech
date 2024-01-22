@@ -11,7 +11,8 @@ const config: Config.InitialOptions = {
     'src/repositories/',
     'src/env/',
     'src/use-cases/errors/',
-    'src/infra/logger/'
+    'src/infra/logger/',
+    'src/infra/cache/'
   ],
   coverageReporters: ['cobertura', 'text', 'html'],
 };
