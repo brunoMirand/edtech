@@ -29,9 +29,11 @@ describe('Use Case - List Content By Id', () => {
 
     const content = await contentRepository.create(inputContent);
     const userId = content.id;
+    const role = 'student';
+
 
     //when
-    const response = await sut.execute(content.id, userId) as Content;
+    const response = await sut.execute(content.id, userId, role) as Content;
 
     //then
     expect(response.id).toBe(content.id);
@@ -43,11 +45,35 @@ describe('Use Case - List Content By Id', () => {
     //given
     const id = 'fake-id';
     const userId = 'fake-id';
+    const role = 'student';
+
 
     //when
-    const response = await sut.execute(id, userId);
+    const response = await sut.execute(id, userId, role);
 
     //then
     expect(response).toEqual(expect.arrayContaining([]));
+  });
+
+  it('should not be counted when viewed by an admin', async () => {
+    //give
+    const inputContent: InputContent = {
+      name: 'Comunicação Assíncrona',
+      description: 'Aprenda como se comunicar em ambientes remotos',
+      type: 'pdf',
+    };
+
+    const content = await contentRepository.create(inputContent);
+
+    const id = content.id;
+    const userId = 'fake-id';
+    const role = 'admin';
+
+    //when
+    const response = await sut.execute(id, userId, role) as Content;
+
+    //then
+    expect(response.views).toBe(0);
+    expect(response.name).toBe('Comunicação Assíncrona');
   });
 });
