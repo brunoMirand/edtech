@@ -24,6 +24,7 @@ export class ListContentById {
       await this.contentRepository.incrementViews(id, views);
     }
 
+    this.logger.info('retrieved content', { extras: id});
     return content;
   }
 

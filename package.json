@@ -6,8 +6,12 @@
   "scripts": {
     "build": "tsup  src/**/*.ts --out-dir build",
     "start": "node build/server.js",
+    "db:migrate": "npx prisma migrate dev",
+    "prestart:dev": "docker-compose up -d",
     "start:dev": "tsx watch src/server.ts",
     "test:unit": "jest ./test/unit",
+    "pretest:integration": "docker-compose up -d",
+    "posttest:integration": "docker-compose stop",
     "test:integration": "jest --config jest-e2e.config.ts --detectOpenHandles",
     "test:coverage": "jest ./test/unit --silent --coverage",
     "lint": "eslint ./"
