@@ -2,15 +2,15 @@
 
 ### Requisitos de negócio:
 
-[ x ] Essa API não será pública e será utilizada por dois níveis de usuário: administrador e estudante;
+- [x] Essa API não será pública e será utilizada por dois níveis de usuário: administrador e estudante;
 
-[ x ] Os conteúdos deverão ser gerenciados (criação, atualização e deleção) somente por usuários administradores;
+- [x] Os conteúdos deverão ser gerenciados (criação, atualização e deleção) somente por usuários administradores;
 
-[ x ] Os usuários estudantes poderão apenas visualizar a listagem dos conteúdos disponibilizados na plataforma, e os detalhes específicos de cada um;
+- [x] Os usuários estudantes poderão apenas visualizar a listagem dos conteúdos disponibilizados na plataforma, e os detalhes específicos de cada um;
 
-[ x ] Os conteúdos deverão ter obrigatoriamente nome, descrição, e tipo;
-[ x ] Deverão ser permitidas apenas três strings no tipo do conteúdo: **video**, **pdf** ou **image**;
-[ x ] Será necessário contabilizar as visualizações **únicas** dos **estudantes** ao acessarem os detalhes do conteúdo
+- [x] Os conteúdos deverão ter obrigatoriamente nome, descrição, e tipo;
+- [x] Deverão ser permitidas apenas três strings no tipo do conteúdo: **video**, **pdf** ou **image**;
+- [x] Será necessário contabilizar as visualizações **únicas** dos **estudantes** ao acessarem os detalhes do conteúdo
 
 ### Pre-requisitos:
 - nodejs
