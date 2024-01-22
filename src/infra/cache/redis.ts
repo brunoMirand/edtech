@@ -1,11 +1,17 @@
-import Redis from 'ioredis';
 import { Cache } from '@/infra/cache/interface';
+import { connectionRedisClient } from '@/infra/cache/redis-connections';
+import { connectionTestRedisClient } from '@/infra/cache/redis-connections-test';
+import { env } from '@/env';
 
 export class RedisCache implements Cache {
   private readonly client;
 
   constructor() {
-    this.client = new Redis();
+    if (env.NODE_ENV !== 'test') {
+      this.client = connectionRedisClient();
+    } else {
+      this.client = connectionTestRedisClient();
+    }
   }
 
   async set(key: string, data: string) {
@@ -17,6 +23,9 @@ export class RedisCache implements Cache {
   }
 
   async delete(key: string) {
-    await this.client.del(key);
+    const keys = await this.client.keys(key);
+    if (keys.length > 0) {
+      await this.client.del(...keys);
+    }
   }
 }

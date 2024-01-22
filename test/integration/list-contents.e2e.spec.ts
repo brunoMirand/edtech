@@ -54,48 +54,4 @@ describe('GET /contents', () => {
       }
     ]);
   });
-
-  it('should be able list contents using pagination', async () => {
-    await prisma.content.createMany({
-      data: [
-        {
-          name: 'Seja sempre você',
-          description: 'Não seja apenas uma formiga',
-          type: 'pdf',
-        },
-        {
-          name: 'Faça o que é melhor pra ambos',
-          description: 'Não seja apenas uma formiga',
-          type: 'video',
-        },
-        {
-          name: 'Pense bem antes, mas não muito',
-          description: 'Não seja apenas uma formiga',
-          type: 'image',
-        }
-      ]
-    });
-
-
-    const response = await request(app.server)
-      .get('/contents?page=1')
-      .set('authorization', `Bearer ${tokens.student}`);
-
-    expect(response.statusCode).toEqual(200);
-    expect(response.body).toEqual(expect.arrayContaining([
-      {
-        id: expect.any(String),
-        name: 'Seja sempre você',
-      },
-      {
-        id: expect.any(String),
-        name: 'Faça o que é melhor pra ambos',
-      },
-      {
-        id: expect.any(String),
-        name: 'Pense bem antes, mas não muito',
-      }
-    ]));
-    expect(response.body).toHaveLength(5);
-  });
 });

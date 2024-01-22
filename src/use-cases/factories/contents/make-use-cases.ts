@@ -6,18 +6,20 @@ import { UpdateContent } from '@/use-cases/update-content';
 import { RemoveContent } from '@/use-cases/remove-content';
 import { ListContentById } from '@/use-cases/list-content-by-id';
 import { PinoLogger } from '@/infra/logger/pino-logger';
+import { RedisCache } from '@/infra/cache/redis';
 
 export class ContentsUseCasesFactory {
   static make() {
     const contentRepository = new PrismaContentsRepository();
     const viewsRepository = new PrismaViewsRepository();
     const logger = new PinoLogger();
+    const redis = new RedisCache();
 
     return {
-      createContent: new CreateContent(contentRepository, logger),
-      updateContent: new UpdateContent(contentRepository, logger),
-      listContents: new ListContents(contentRepository, logger),
-      removeContent: new RemoveContent(contentRepository, logger),
+      createContent: new CreateContent(contentRepository, logger, redis),
+      updateContent: new UpdateContent(contentRepository, logger, redis),
+      listContents: new ListContents(contentRepository, logger, redis),
+      removeContent: new RemoveContent(contentRepository, logger, redis),
       listContentById: new ListContentById(contentRepository, viewsRepository, logger),
     };
   }

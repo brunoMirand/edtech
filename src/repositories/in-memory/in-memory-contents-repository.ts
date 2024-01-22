@@ -39,7 +39,13 @@ export class InMemoryContentsRepository implements ContentsRepository {
     const startIndex = (page - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
 
-    const paginatedContent = contents.slice(startIndex, endIndex);
+    const paginatedContent = contents.slice(startIndex, endIndex)
+      .map(content => {
+        return {
+          id: content.id,
+          name: content.name
+        };
+      });
     return paginatedContent;
   }
 

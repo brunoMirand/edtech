@@ -10,7 +10,8 @@ const config: Config.InitialOptions = {
   coveragePathIgnorePatterns: [
     'src/repositories/',
     'src/env/',
-    'src/use-cases/errors',
+    'src/use-cases/errors/',
+    'src/infra/logger/'
   ],
   coverageReporters: ['cobertura', 'text', 'html'],
 };

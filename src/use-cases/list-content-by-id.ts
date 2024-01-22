@@ -1,4 +1,4 @@
-import { Logger } from '@/infra/logger/logger';
+import { Logger } from '@/infra/logger/interface';
 import { ContentsRepository } from '@/repositories/interfaces/contents-repository';
 import { ViewsRepository } from '@/repositories/interfaces/views-repository';
 

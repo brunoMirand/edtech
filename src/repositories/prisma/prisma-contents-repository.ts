@@ -36,50 +36,54 @@ export class PrismaContentsRepository implements ContentsRepository {
       },
       skip: skip,
       take: itemsPerPage,
-      orderBy: {
-        created_at: 'desc',
+      orderBy: [{
+        updated_at: 'desc',
       },
+      {
+        created_at: 'desc',
+      }
+      ],
     });
 
     return contents;
   }
 
-  async delete(id: string) {
-    await prisma.content.delete({
-      where: {
-        id,
-      },
-    });
-  }
+  async delete (id: string) {
+  await prisma.content.delete({
+    where: {
+      id,
+    },
+  });
+}
 
   async findById(id: string) {
-    const content = await prisma.content.findUnique({
-      where: {
-        id
-      },
-    });
+  const content = await prisma.content.findUnique({
+    where: {
+      id
+    },
+  });
 
-    return content;
-  }
+  return content;
+}
 
   async incrementViews(id: string, views: number) {
-    await prisma.content.update({
-      where: {
-        id
-      },
-      data: {
-        views
-      }
-    });
-  }
+  await prisma.content.update({
+    where: {
+      id
+    },
+    data: {
+      views
+    }
+  });
+}
 
   async findByName(name: string) {
-    const content = prisma.content.findUnique({
-      where: {
-        name,
-      },
-    });
+  const content = prisma.content.findUnique({
+    where: {
+      name,
+    },
+  });
 
-    return content;
-  }
+  return content;
+}
 }
