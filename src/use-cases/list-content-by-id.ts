@@ -9,7 +9,7 @@ export class ListContentById {
     private logger: Logger,
   ) { }
 
-  async execute(id: string, userId: string) {
+  async execute(id: string, userId: string, role: string) {
     const content = await this.contentRepository.findById(id);
     if (!content) {
       this.logger.info('content not found', { extras: id});
@@ -17,7 +17,7 @@ export class ListContentById {
     }
 
     const hasAlreadyBeenViewed = await this.viewsRepository.contentHasBeenViewed(id, userId);
-    if (!hasAlreadyBeenViewed) {
+    if (this.canIncreaseVisualization(hasAlreadyBeenViewed, role)) {
       this.logger.info('recording user view of content', { extras: { contentId: id, userId }});
       await this.viewsRepository.save(id, userId);
       const views = content.views += 1;
@@ -25,5 +25,9 @@ export class ListContentById {
     }
 
     return content;
+  }
+
+  private canIncreaseVisualization(hasAlreadyBeenViewed: boolean, role: string): boolean {
+    return !hasAlreadyBeenViewed && role === 'student';
   }
 }

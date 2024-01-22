@@ -8,10 +8,10 @@ export class ListContentByIdController {
 
   async handle(request: FastifyRequest<{ Params: Parameters}>, reply: FastifyReply) {
     try {
-      const { user: { sub } } = request;
+      const { user: { sub, role } } = request;
       const id = contentSchemaId.parse(request.params.id);
       const listContentById = (ContentsUseCasesFactory.make()).listContentById;
-      const response = await listContentById.execute(id, sub);
+      const response = await listContentById.execute(id, sub, role);
       reply.status(200).send(response);
     } catch (e) {
       if (e instanceof ZodError) {
