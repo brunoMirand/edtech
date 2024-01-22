@@ -49,6 +49,20 @@ export class PrismaContentsRepository implements ContentsRepository {
   }
 
   async delete (id: string) {
+    const registerFound = await prisma.contentViewed.findFirst({
+      where: {
+        content_id: id,
+      },
+    });
+
+    if (registerFound) {
+      await prisma.contentViewed.deleteMany({
+        where: {
+          content_id: id
+        },
+      });
+    }
+
     await prisma.content.delete({
       where: {
         id,
