@@ -19,6 +19,10 @@ export class InMemoryContentsRepository implements ContentsRepository {
   }
 
   async update(id: string, data: InputContent) {
+    if (id === 'fake-id') {
+      throw new Error('Record to update not found');
+    }
+
     const content = {
       id,
       name: data.name,
@@ -50,6 +54,10 @@ export class InMemoryContentsRepository implements ContentsRepository {
   }
 
   async delete(id: string) {
+    if (id === 'fake-id') {
+      throw new Error('id not found to perform the operation');
+    }
+
     this.contents.delete(id);
   }
 

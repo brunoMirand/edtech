@@ -3,6 +3,7 @@ import { UpdateContent } from '@/use-cases/update-content';
 import { InputContent } from '@/domain/entities/content';
 import { PinoLogger } from '@/infra/logger/pino-logger';
 import { RedisCache } from '@/infra/cache/redis';
+import { UnableUpdateContentError } from '@/use-cases/errors/contents-errors';
 
 jest.mock('@/infra/logger/pino-logger');
 jest.mock('@/infra/cache/redis');
@@ -40,5 +41,17 @@ describe('Use Case - Create Content', () => {
     const response = await sut.execute(contentCreated.id, newContent);
     //then
     expect(response.name).toBe('Ser ou não ser');
+  });
+
+  it('should return an exception when trying to update content with a non-existent id', async () => {
+    //given
+    const newContent: InputContent = {
+      name: 'Ser ou não ser',
+      description: 'aprenda com os melhores',
+      type: 'video',
+    };
+
+    //when//then
+    await expect(() => sut.execute('fake-id', newContent)).rejects.toThrow(new UnableUpdateContentError());
   });
 });

@@ -3,6 +3,7 @@ import { RemoveContent } from '@/use-cases/remove-content';
 import { InputContent } from '@/domain/entities/content';
 import { PinoLogger } from '@/infra/logger/pino-logger';
 import { RedisCache } from '@/infra/cache/redis';
+import { UnableRemoveContentError } from '@/use-cases/errors/contents-errors';
 
 jest.mock('@/infra/logger/pino-logger');
 jest.mock('@/infra/cache/redis');
@@ -33,5 +34,10 @@ describe('Use Case - Remove Content', () => {
 
     //when//then
     expect(await sut.execute(content.id)).toBe(void 0);
+  });
+
+  it('should return an exception when trying to remove content with a non-existent id', async () => {
+    //given//when//then
+    await expect( () => sut.execute('fake-id')).rejects.toThrow(new UnableRemoveContentError());
   });
 });
