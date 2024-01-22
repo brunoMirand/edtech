@@ -3,14 +3,11 @@
 ### Requisitos de negócio:
 
 - [x] Essa API não será pública e será utilizada por dois níveis de usuário: administrador e estudante;
-
 - [x] Os conteúdos deverão ser gerenciados (criação, atualização e deleção) somente por usuários administradores;
-
 - [x] Os usuários estudantes poderão apenas visualizar a listagem dos conteúdos disponibilizados na plataforma, e os detalhes específicos de cada um;
-
 - [x] Os conteúdos deverão ter obrigatoriamente nome, descrição, e tipo;
 - [x] Deverão ser permitidas apenas três strings no tipo do conteúdo: **video**, **pdf** ou **image**;
-- [x] Será necessário contabilizar as visualizações **únicas** dos **estudantes** ao acessarem os detalhes do conteúdo
+- [x] Será necessário contabilizar as visualizações **únicas** dos **estudantes** ao acessarem os detalhes do conteúdo;
 
 ### Pre-requisitos:
 - nodejs
@@ -72,7 +69,116 @@ npm run test:integration
 
 ---
 
-### Estratégias de Desempenho:
+### Recursos da API
+
+#### POST /tokens
+
+###### Request
+```json
+  POST http://localhost:4444/tokens
+  content-type: application/json
+  data {"userId":"321231546","role":"student"} # student ou admin
+```
+###### Response
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoic3R1ZGVudCIsInN1YiI6IjM2NTU1NSIsImlhdCI6MTcwNTk0MjkxM30.dwNSfUGgOWKRMa0JP2VhX2bEzUZ3ik2v9HN7tn7x2jw"
+}
+```
+---
+
+#### POST /contents
+###### Request
+```json
+  POST http://localhost:4444/contents
+  authorization: Bearer ${token}
+  content-type: application/json
+  data {"name":"Acessibilidade Digital","description":"Saiba as boas práticas sobre o tema","type":"video"}
+```
+###### Response
+```json
+{
+  "id": "29c7a665-af9a-4d01-b71a-74a02e4d7520",
+  "name": "Acessibilidade Digital",
+  "description": "Saiba as boas práticas sobre o tema",
+  "type": "video",
+  "views": 0,
+  "created_at": "2024-01-22T17:49:34.853Z",
+  "updated_at": "2024-01-22T17:49:34.853Z"
+}
+```
+---
+
+#### GET /contents
+#### GET /contents/?page=1
+
+###### Request
+```json
+  GET http://localhost:4444/contents
+  authorization: Bearer ${token}
+```
+###### Response
+```json
+[
+  {
+    "id": "bf127aec-7021-4fb6-9da2-1eb8f789abfe",
+    "name": "Acessibilidade Digital"
+  }
+]
+```
+---
+
+#### GET /contents/:id
+
+###### Request
+```json
+  GET http://localhost:4444/contents/bf127aec-7021-4fb6-9da2-1eb8f789abfe
+  authorization: Bearer ${token}
+```
+###### Response
+```json
+{
+  "id": "bf127aec-7021-4fb6-9da2-1eb8f789abfe",
+  "name": "Acessibilidade Digital",
+  "description": "Saiba as boas práticas sobre o tema",
+  "type": "video",
+  "views": 1,
+  "created_at": "2024-01-22T21:38:58.300Z",
+  "updated_at": "2024-01-22T21:38:58.300Z"
+}
+```
+---
+
+#### PUT /contents/:id
+
+###### Request
+```json
+  PUT http://localhost:4444/contents/bf127aec-7021-4fb6-9da2-1eb8f789abfe
+  authorization: Bearer ${token}
+  content-type: application/json
+  data {"name":"Usar cache com paginação é complicado.","description":"díficil tomar decisões assim","type":"pdf"}
+```
+
+###### Response
+```json
+No content
+```
+---
+
+#### DELETE /contents/:id
+###### Request
+```json
+DELETE http://localhost:4444/contents/bf127aec-7021-4fb6-9da2-1eb8f789abfe
+authorization: Bearer ${token}
+```
+
+###### Response
+```json
+No content
+```
+---
+
+### Estratégias de Desempenho
 
 1. Uso do framework Fastify que traz um benchmark interessante sobre sobrecarga de estrutura do framework em relação aos demais do mesmo ecossistema. [benchmarks](https://fastify.dev/benchmarks/)
 
@@ -87,3 +193,15 @@ npm run test:integration
 >- Decidi não armazenar em cache os detalhes do conteúdo quando um estudante o acessa. Isso se deve à volatilidade da propriedade **"views"**, que está sempre em constante atualização. Nesse cenário, gravar e invalidar o cache não proporciona ganhos significativos de desempenho e processamento da aplicação.
 
 >- Em casos de atualização ou remoção de algum conteúdo, todas as páginas em cache não são removidas. **Essa decisão foi desafiadora, mas não encontrei uma solução mais rápida e eficiente para esse contexto específico**.
+
+### Estratégia de Desenvolvimento
+
+1. Lib (zod)[https://zod.dev/] para validação de schema da dados de entrada.
+
+2. Lib acl para fazer a lista de controle de acesso aos recursos da api.
+
+3. Jwt para a camada de validação por tokens.
+
+4. Estrutura de logs implementada na aplicação.
+
+5. Conceitos de SOLID.
