@@ -1,28 +1,75 @@
-name: CI
+name: ci
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  workflow_call:
+
+env:
+  NPM_TOKEN: test
 
 jobs:
-  lint-and-test:
+  bootstrap:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: '20.10.0'
+      - uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ./node_modules
+          key: cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
 
-      - name: Install dependencies
-        run: npm install
+  lint:
+    needs: [bootstrap]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0'
+      - uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ./node_modules
+          key: cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+      - run: npm run lint
 
-      - name: Run linting
-        run: npm run lint
+  test-unit:
+    needs: [bootstrap]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0'
+      - uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ./node_modules
+          key: cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+      - run: npm run test:coverage
 
-      - name: Run unit tests
-        run: npm run test:unit
+  build:
+    needs: ['lint', 'test-unit']
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.10.0'
+      - uses: actions/cache@v3
+        id: cache-node-modules
+        with:
+          path: ./node_modules
+          key: cache-${{ hashFiles('**/package-lock.json') }}
+      - run: npm ci
+      - run: npm run build --if-present
