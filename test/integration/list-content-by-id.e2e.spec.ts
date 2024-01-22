@@ -37,7 +37,7 @@ describe('GET /contents/:id', () => {
   it('should return empty list when not find content by id', async () => {
 
     const response = await request(app.server)
-      .get('/contents/896574')
+      .get('/contents/00630ed7-5c3b-4438-9bc8-8ea5bb3c1c17')
       .set('authorization', `Bearer ${tokens.student}`);
 
     expect(response.statusCode).toEqual(200);

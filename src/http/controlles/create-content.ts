@@ -1,18 +1,12 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { z } from 'zod';
 import { ContentsUseCasesFactory } from '@/use-cases/factories/contents/make-use-cases';
 import { UnableCreateContentError } from '@/use-cases/errors/contents-errors';
+import { contentSchemaBody } from '@/http/validations/schema';
 
 export class CreateContentController {
   constructor() { }
 
   async handle(request: FastifyRequest, reply: FastifyReply) {
-    const contentSchemaBody = z.object({
-      name: z.string().min(6),
-      description: z.string().min(10),
-      type: z.enum(['pdf', 'video', 'image']),
-    });
-
     try {
       const { body } = request;
       const input = contentSchemaBody.parse(body);

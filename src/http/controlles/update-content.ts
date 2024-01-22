@@ -1,25 +1,23 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
-import { z } from 'zod';
+import { ZodError } from 'zod';
 import { ContentsUseCasesFactory } from '@/use-cases/factories/contents/make-use-cases';
 import { UnableUpdateContentError } from '@/use-cases/errors/contents-errors';
+import { contentSchemaBody, contentSchemaId } from '@/http/validations/schema';
 
 export class UpdateContentController {
   constructor() { }
 
   async handle(request: FastifyRequest<{ Params: Parameters }>, reply: FastifyReply) {
-    const schemaBody = z.object({
-      name: z.string().min(6),
-      description: z.string().min(10),
-      type: z.enum(['pdf', 'video', 'image']),
-    });
-
     try {
-      const { id } = request.params;
-      const input = schemaBody.parse(request.body);
+      const id = contentSchemaId.parse(request.params.id);
+      const input = contentSchemaBody.parse(request.body);
       const updateContent = (ContentsUseCasesFactory.make()).updateContent;
       await updateContent.execute(id, input);
       reply.status(204).send();
     } catch (e) {
+      if (e instanceof ZodError) {
+        reply.status(422).send({ message: JSON.parse(e.message) });
+      }
       if (e instanceof UnableUpdateContentError) {
         reply.status(422).send({ message: e.message });
       }

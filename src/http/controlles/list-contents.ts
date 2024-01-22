@@ -6,9 +6,10 @@ export class ListContentsController {
 
   async handle(request: FastifyRequest<{ Querystring: QueryParameters }>, reply: FastifyReply) {
     try {
-      const { page = 1 } = request.query;
+      const { page = '1' } = request.query;
+      const sanitizedPage = page.replace(/[^0-9]/g, '');
       const listContents = (ContentsUseCasesFactory.make().listContents);
-      const contents = await listContents.execute(page);
+      const contents = await listContents.execute(Number(sanitizedPage));
       reply.status(200).send(contents);
     } catch (e) {
       if (e instanceof Error) {
@@ -21,5 +22,5 @@ export class ListContentsController {
 }
 
 type QueryParameters = {
-  page?: number;
+  page?: string;
 }
