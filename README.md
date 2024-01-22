@@ -54,6 +54,7 @@ npm rub db:migrate
 ##### Unitários
 ```sh
 npm run test:unit
+npm run test:coverage
 ```
 **Ferramenta**: Jest
 > Conceitos de mock, stubs e in memory database.
