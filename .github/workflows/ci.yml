@@ -53,7 +53,7 @@ jobs:
           path: ./node_modules
           key: cache-${{ hashFiles('**/package-lock.json') }}
       - run: npm ci
-      - run: npm run test:coverage
+      - run: npm run test:unit
 
   build:
     needs: ['lint', 'test-unit']
