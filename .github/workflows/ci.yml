@@ -9,7 +9,10 @@ on:
   workflow_call:
 
 env:
-  NPM_TOKEN: test
+  NODE_ENV: test
+  PORT: 4444
+  DATABASE_URL: "postgresql://docker:docker@localhost:5432/database"
+  JWT_SECRET_KEY: "TRAVOLT"
 
 jobs:
   bootstrap:
