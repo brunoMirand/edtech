@@ -29,17 +29,25 @@
 #### Executando a API pela primeira vez:
 
 1. Clone o projeto
-- git clone git@github.com:brunoMirand/edtech.git && cd edtech
+```sh
+git clone git@github.com:brunoMirand/edtech.git && cd edtech
+```
 
 2. Gere o .env
-- cp .env.example .env
+```sh
+cp .env.example .env
+```
 
 3. Instale as dependências do projeto
-- npm install
+```sh
+npm install
+```
 
 4. Suba a API, Banco de dados e Redis
-- npm run start:dev
-- npm rub db:migrate
+```sh
+npm run start:dev
+npm rub db:migrate
+```
 
 #### Após esse primeiro setup, nas demais vezes quer for subir o projeto, apenas o comando (npm run start:dev) basta.
 
