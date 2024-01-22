@@ -54,6 +54,7 @@ npm rub db:migrate
 ##### Unitários
 ```sh
 npm run test:unit
+npm run test:coverage
 ```
 **Ferramenta**: Jest
 > Conceitos de mock, stubs e in memory database.
@@ -192,7 +193,7 @@ No content
 
 >- Decidi não armazenar em cache os detalhes do conteúdo quando um estudante o acessa. Isso se deve à volatilidade da propriedade **"views"**, que está sempre em constante atualização. Nesse cenário, gravar e invalidar o cache não proporciona ganhos significativos de desempenho e processamento da aplicação.
 
->- Em casos de atualização ou remoção de algum conteúdo, todas as páginas em cache não são removidas. **Essa decisão foi desafiadora, mas não encontrei uma solução mais rápida e eficiente para esse contexto específico**.
+>- Em casos de atualização ou remoção de algum conteúdo, todas as páginas em cache são removidas. **Essa decisão foi desafiadora, mas não encontrei uma solução mais rápida e eficiente para esse contexto específico**.
 
 ### Estratégia de Desenvolvimento
 
