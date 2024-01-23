@@ -211,3 +211,6 @@ No content
 5. Tratamentos de erros, sanatização de parametros.
 
 6. Conceitos de SOLID.
+
+7. CI com github actions
+   
