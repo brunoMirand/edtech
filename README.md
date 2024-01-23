@@ -69,7 +69,7 @@ npm run test:integration
 
 **Ferramenta**: Supertest
 
-> Tanto para a camada de Bando de dados e Cache, foi usando o conceito de isolamento de ambiente nos testes de integração, com foco na necessidade de se ter um banco de dados de testes separados do banco de dados de produção e desenvolvimento.
+> Tanto para a camada de Banco de dados e Cache, foi usando o conceito de isolamento de ambiente nos testes de integração, com foco na necessidade de se ter um banco de dados de testes separados do banco de dados de produção e desenvolvimento.
 
 ---
 
