@@ -23,7 +23,9 @@ export class HealthcheckController {
         }
       ];
 
-      const hasCriticalDependencyDown = dependencies.find(dependency => dependency.critical === true);
+      const hasCriticalDependencyDown = dependencies.find(
+        dependency => dependency.critical === true && dependency.up === false
+      );
       if (hasCriticalDependencyDown) {
         logger.error('service Unavailable:', { extras: { dependencies } });
         reply.status(503).send({ dependencies });
