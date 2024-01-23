@@ -1,11 +1,11 @@
 import { FastifyInstance } from 'fastify';
 import acl from 'acl';
 import { CheckPermissionMiddleware } from '@/http/middlewares/check-permission';
-import { CreateContentController } from '@/http/controlles/create-content';
-import { UpdateContentController } from '@/http/controlles/update-content';
-import { RemoveContentController } from '@/http/controlles/remove-content';
-import { ListContentsController } from '@/http/controlles/list-contents';
-import { ListContentByIdController } from '@/http/controlles/list-content-by-id';
+import { CreateContentController } from '@/http/controllers/create-content';
+import { UpdateContentController } from '@/http/controllers/update-content';
+import { RemoveContentController } from '@/http/controllers/remove-content';
+import { ListContentsController } from '@/http/controllers/list-contents';
+import { ListContentByIdController } from '@/http/controllers/list-content-by-id';
 import { PinoLogger } from '@/infra/logger/pino-logger';
 
 export async function appRouteProtected(app: FastifyInstance) {
