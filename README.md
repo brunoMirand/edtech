@@ -42,8 +42,8 @@ npm install
 
 4. Suba a API, Banco de dados e Redis
 ```sh
-npm run start:dev
-npm run db:migrate
+npm run start:dev # start app, redis, database
+npm run db:migrate # execute migrate schema prisma
 ```
 
 #### Após esse primeiro setup, nas demais vezes quer for subir o projeto, apenas o comando basta:
@@ -60,7 +60,7 @@ npm run test:unit
 npm run test:coverage
 ```
 **Ferramenta**: Jest
-> Conceitos de mock, stubs e in memory database.
+> Conceitos de mock, stubs e [in memory database](https://martinfowler.com/bliki/InMemoryTestDatabase.html).
 
 #### Integração
 ```sh
@@ -75,10 +75,35 @@ npm run test:integration
 
 ### Recursos da API
 
+#### GET /healthcheck
+
+###### Request
+```sh
+  GET http://localhost:4444/healthcheck
+```
+###### Response
+```json
+{
+  "dependencies": [
+    {
+      "type": "database",
+      "critical": true,
+      "up": false
+    },
+    {
+      "type": "redis",
+      "critical": false,
+      "up": true
+    }
+  ]
+}
+```
+---
+
 #### POST /tokens
 
 ###### Request
-```json
+```sh
   POST http://localhost:4444/tokens
   content-type: application/json
   data {"userId":"321231546","role":"student"} # student ou admin
@@ -93,7 +118,7 @@ npm run test:integration
 
 #### POST /contents
 ###### Request
-```json
+```sh
   POST http://localhost:4444/contents
   authorization: Bearer ${token}
   content-type: application/json
@@ -117,7 +142,7 @@ npm run test:integration
 #### GET /contents/?page=1
 
 ###### Request
-```json
+```sh
   GET http://localhost:4444/contents
   authorization: Bearer ${token}
 ```
@@ -135,7 +160,7 @@ npm run test:integration
 #### GET /contents/:id
 
 ###### Request
-```json
+```sh
   GET http://localhost:4444/contents/bf127aec-7021-4fb6-9da2-1eb8f789abfe
   authorization: Bearer ${token}
 ```
@@ -156,7 +181,7 @@ npm run test:integration
 #### PUT /contents/:id
 
 ###### Request
-```json
+```sh
   PUT http://localhost:4444/contents/bf127aec-7021-4fb6-9da2-1eb8f789abfe
   authorization: Bearer ${token}
   content-type: application/json
@@ -171,7 +196,7 @@ No content
 
 #### DELETE /contents/:id
 ###### Request
-```json
+```sh
 DELETE http://localhost:4444/contents/bf127aec-7021-4fb6-9da2-1eb8f789abfe
 authorization: Bearer ${token}
 ```
@@ -197,10 +222,11 @@ No content
 >- Decidi não armazenar em cache os detalhes do conteúdo quando um estudante o acessa. Isso se deve à volatilidade da propriedade **"views"**, que está sempre em constante atualização. Nesse cenário, gravar e invalidar o cache não proporciona ganhos significativos de desempenho e processamento da aplicação.
 
 >- Em casos de atualização ou remoção de algum conteúdo, todas as páginas em cache são removidas. **Essa decisão foi desafiadora, mas não encontrei uma solução mais rápida e eficiente para esse contexto específico**.
+**Até tenho outra solução mas depende muito do cenário, que é "não invalidar o cache e apenas esperar o seu tempo vida"**
 
 ### Estratégia de Desenvolvimento
 
-1. Lib (zod)[https://zod.dev/] para validação de schema da dados de entrada.
+1. Lib [zod](https://zod.dev/) para validação de schema da dados de entrada.
 
 2. Lib acl para fazer a lista de controle de acesso aos recursos da api.
 
