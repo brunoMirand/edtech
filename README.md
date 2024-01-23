@@ -75,10 +75,35 @@ npm run test:integration
 
 ### Recursos da API
 
+#### GET /healthcheck
+
+###### Request
+```curl
+  GET http://localhost:4444/healthcheck
+```
+###### Response
+```json
+{
+  "dependencies": [
+    {
+      "type": "database",
+      "critical": true,
+      "up": false
+    },
+    {
+      "type": "redis",
+      "critical": false,
+      "up": true
+    }
+  ]
+}
+```
+---
+
 #### POST /tokens
 
 ###### Request
-```json
+```sh
   POST http://localhost:4444/tokens
   content-type: application/json
   data {"userId":"321231546","role":"student"} # student ou admin
