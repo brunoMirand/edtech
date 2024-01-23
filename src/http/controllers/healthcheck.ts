@@ -56,7 +56,7 @@ const initializeRedis = async () => {
     await redis.ping();
     logger.info('Connected to the redis', {});
     return true;
-  } catch (error) {
+  } catch (e) {
     logger.error('Error connecting to the redis:', { extras: { error: e } });
     return false;
   }
