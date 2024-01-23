@@ -42,8 +42,8 @@ npm install
 
 4. Suba a API, Banco de dados e Redis
 ```sh
-npm run start:dev
-npm run db:migrate
+npm run start:dev # start app, redis, database
+npm run db:migrate # execute migrate schema prisma
 ```
 
 #### Após esse primeiro setup, nas demais vezes quer for subir o projeto, apenas o comando basta:
@@ -78,7 +78,7 @@ npm run test:integration
 #### GET /healthcheck
 
 ###### Request
-```curl
+```sh
   GET http://localhost:4444/healthcheck
 ```
 ###### Response
@@ -118,7 +118,7 @@ npm run test:integration
 
 #### POST /contents
 ###### Request
-```json
+```sh
   POST http://localhost:4444/contents
   authorization: Bearer ${token}
   content-type: application/json
@@ -142,7 +142,7 @@ npm run test:integration
 #### GET /contents/?page=1
 
 ###### Request
-```json
+```sh
   GET http://localhost:4444/contents
   authorization: Bearer ${token}
 ```
@@ -160,7 +160,7 @@ npm run test:integration
 #### GET /contents/:id
 
 ###### Request
-```json
+```sh
   GET http://localhost:4444/contents/bf127aec-7021-4fb6-9da2-1eb8f789abfe
   authorization: Bearer ${token}
 ```
@@ -181,7 +181,7 @@ npm run test:integration
 #### PUT /contents/:id
 
 ###### Request
-```json
+```sh
   PUT http://localhost:4444/contents/bf127aec-7021-4fb6-9da2-1eb8f789abfe
   authorization: Bearer ${token}
   content-type: application/json
@@ -196,7 +196,7 @@ No content
 
 #### DELETE /contents/:id
 ###### Request
-```json
+```sh
 DELETE http://localhost:4444/contents/bf127aec-7021-4fb6-9da2-1eb8f789abfe
 authorization: Bearer ${token}
 ```
