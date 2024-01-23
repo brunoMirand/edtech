@@ -234,7 +234,7 @@ No content
 
 4. Estrutura de logs implementada na aplicação.
 
-5. Tratamentos de erros, sanatização de parametros.
+5. Tratamentos de erros, sanitização de parametros.
 
 6. Conceitos de SOLID.
 
