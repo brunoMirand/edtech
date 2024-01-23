@@ -186,9 +186,9 @@ No content
 
 1. Uso do framework Fastify que traz um benchmark interessante sobre sobrecarga de estrutura do framework em relação aos demais do mesmo ecossistema. [benchmarks](https://fastify.dev/benchmarks/)
 
-2. Abordagem de páginação dos contéudos listado, deixando fixo o valor de limite por páginas e apenas podendo andar de página em página.
+2. Abordagem de páginação dos conteúdos listado, deixando fixo o valor de limite por páginas e apenas podendo andar de página em página.
 
-3. Ruduzindo propriedades do conteúdo na listagem, deixando apenas o id conteúdo e o nome.
+3. Reduzindo propriedades do conteúdo na listagem, deixando apenas o id conteúdo e o nome.
 
 4. Utilização de uma camada de cache para armazenar os conteúdos:
 
