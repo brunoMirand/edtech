@@ -17,7 +17,7 @@ describe('POST /contents', () => {
       .set('authorization', `Bearer ${tokens.admin}`)
       .set('Content-Type', 'application/json')
       .send({
-        name: 'Escreve testes mas não mutos',
+        name: 'Escreve testes mas não muitos',
         description: 'Apenas o suficiente',
         type: 'video',
       });
@@ -31,7 +31,7 @@ describe('POST /contents', () => {
       .set('authorization', `Bearer ${tokens.student}`)
       .set('Content-Type', 'application/json')
       .send({
-        name: 'Escreve testes mas não mutos',
+        name: 'Escreve testes mas não muitos',
         description: 'Apenas o suficiente',
         type: 'video',
       });
