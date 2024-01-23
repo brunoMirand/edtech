@@ -10,9 +10,9 @@
 - [x] Será necessário contabilizar as visualizações **únicas** dos **estudantes** ao acessarem os detalhes do conteúdo;
 
 ### Pre-requisitos:
-- nodejs
-- npm
-- docker-compose
+- nodejs - v20.10.0
+- npm - v10.2.3
+- docker-compose - v2.23.3
 
 ---
 ### Tecnologias usadas:
