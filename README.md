@@ -1,5 +1,5 @@
 # Plataforma de gerenciamento e visualização de conteúdos
-
+[![ci](https://github.com/brunoMirand/edtech/actions/workflows/ci.yml/badge.svg?event=pull_request)](https://github.com/brunoMirand/edtech/actions/workflows/ci.yml)
 ### Requisitos de negócio:
 
 - [x] Essa API não será pública e será utilizada por dois níveis de usuário: administrador e estudante;
