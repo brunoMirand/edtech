@@ -26,7 +26,7 @@ export class PrismaContentsRepository implements ContentsRepository {
     return content;
   }
 
-  async list(page: number = 0) {
+  async list(page: number) {
     const itemsPerPage = 5;
     const skip = (page - 1) * itemsPerPage;
     const contents = await prisma.content.findMany({

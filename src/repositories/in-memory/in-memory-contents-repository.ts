@@ -37,7 +37,7 @@ export class InMemoryContentsRepository implements ContentsRepository {
     return content;
   }
 
-  async list(page: number = 0) {
+  async list(page: number) {
     const itemsPerPage = 5;
     const contents = Array.from(this.contents.values());
     const startIndex = (page - 1) * itemsPerPage;
